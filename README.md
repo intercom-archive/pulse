@@ -1,0 +1,4 @@
+pulse
+=====
+
+Site health dashboard
