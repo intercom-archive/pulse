@@ -1,0 +1,15 @@
+.DS_Store
+.powrc
+.rvmrc
+.bundle
+.idea
+/tags
+.tags
+.tags_sorted_by_file
+db/*.sqlite3*
+db/structure.sql
+db/dumps
+log/
+tmp/
+.yardoc
+.powenv
