@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :service do
-    title "MyString"
-    description "MyText"
+    title "API"
+    description "The API Endpoint"
   end
 end
