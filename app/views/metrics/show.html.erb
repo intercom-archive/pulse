@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @metric.title %>
+</p>
+
+<p>
+  <strong>Datapoint source:</strong>
+  <%= @metric.datapoint_source %>
+</p>
+
+<p>
+  <strong>Datapoint name:</strong>
+  <%= @metric.datapoint_name %>
+</p>
+
+<p>
+  <strong>Summary:</strong>
+  <%= @metric.summary %>
+</p>
+
+<p>
+  <strong>Mitigation steps:</strong>
+  <%= @metric.mitigation_steps %>
+</p>
+
+<p>
+  <strong>Contact:</strong>
+  <%= @metric.contact %>
+</p>
+
+<%= link_to 'Edit', edit_metric_path(@metric) %> |
+<%= link_to 'Back', metrics_path %>
