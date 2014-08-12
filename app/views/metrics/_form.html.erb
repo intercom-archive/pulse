@@ -1,0 +1,41 @@
+<%= form_for(@metric) do |f| %>
+  <% if @metric.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@metric.errors.count, "error") %> prohibited this metric from being saved:</h2>
+
+      <ul>
+      <% @metric.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title %><br>
+    <%= f.text_field :title, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :datapoint_source %><br>
+    <%= f.select :datapoint_source, options_for_select(Metric::DATAPOINT_SOURCE_VALUES), {}, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :datapoint_name %><br>
+    <%= f.text_field :datapoint_name, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :summary %><br>
+    <%= f.text_area :summary, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :mitigation_steps %><br>
+    <%= f.text_field :mitigation_steps, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :contact %><br>
+    <%= f.text_field :contact, class: 'form-control' %>
+  </div>
+  <div class="actions">
+    <%= f.submit class: 'btn btn-lg btn-primary' %>
+  </div>
+<% end %>

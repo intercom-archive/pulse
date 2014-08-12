@@ -3,5 +3,6 @@ Rails.application.routes.draw do
     root to: redirect(path: '/services', status: 302)
 
     resources :services
+    resources :metrics
   end
 end
