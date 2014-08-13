@@ -1,4 +1,4 @@
-<%= form_for(@metric) do |f| %>
+<%= form_for([@service, @metric]) do |f| %>
   <% if @metric.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@metric.errors.count, "error") %> prohibited this metric from being saved:</h2>
@@ -16,7 +16,6 @@
     <%= f.text_field :title, class: 'form-control' %>
   </div>
   <div class="form-group">
-    <%= f.label :datapoint_source %><br>
     <%= f.select :datapoint_source, options_for_select(Metric::DATAPOINT_SOURCE_VALUES), {}, class: 'form-control' %>
   </div>
   <div class="form-group">
