@@ -4,4 +4,6 @@ class Metric < ActiveRecord::Base
   validates :title, presence: true
   validates :datapoint_source, inclusion: { in: DATAPOINT_SOURCE_VALUES }
   validates :datapoint_name, presence: true
+
+  belongs_to :service
 end
