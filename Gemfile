@@ -23,4 +23,5 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
   gem 'simplecov'
+  gem 'metric_fu'
 end
