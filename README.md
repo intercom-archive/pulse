@@ -1,3 +1,3 @@
-# Pulse [![Build Status](https://secure.travis-ci.org/intercom/pulse.png?branch=master)](http://travis-ci.org/intercom/pulse) [![Code Climate](https://codeclimate.com/github/intercom/pulse.png)](https://codeclimate.com/github/intercom/pulse) [![Dependency Status](https://gemnasium.com/colszowka/simplecov.png)][Dependencies]
+# Pulse [![Build Status](https://secure.travis-ci.org/intercom/pulse.png?branch=master)](http://travis-ci.org/intercom/pulse) [![Code Climate](https://codeclimate.com/github/intercom/pulse.png)](https://codeclimate.com/github/intercom/pulse) [![Coverage Status](https://img.shields.io/coveralls/intercom/pulse.svg)](https://coveralls.io/r/intercom/pulse) [![Dependency Status](https://gemnasium.com/intercom/pulse.png)](https://gemnasium.com/intercom/pulse)
 
-**Pulse** is a dashboard that uses Graphite and Fastly's Epoch to render graphs displaying the health of your application
+**Pulse** is a dashboard that uses data from external metric services to render graphs displaying the health of your application
