@@ -89,6 +89,9 @@ GEM
       sexp_processor (~> 4.4)
     hike (1.2.3)
     hirb (0.7.2)
+    httparty (0.13.1)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.6.11)
     jquery-rails (3.1.1)
       railties (>= 3.0, < 5.0)
@@ -124,6 +127,7 @@ GEM
     mime-types (1.25.1)
     minitest (5.4.0)
     multi_json (1.10.1)
+    multi_xml (0.5.5)
     multipart-post (2.0.0)
     netrc (0.7.7)
     octokit (3.3.0)
@@ -257,6 +261,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   coveralls
   factory_girl_rails
+  httparty
   jquery-rails
   metric_fu
   pg
