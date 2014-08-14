@@ -1,4 +1,8 @@
 require 'coverage_helper'
+require 'dotenv'
+
+# Load up the .env vars
+Dotenv.load
 
 RSpec.configure do |config|
   # Many RSpec users commonly either run the entire suite or an individual
