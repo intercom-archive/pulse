@@ -11,6 +11,8 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'bootstrap-sass', '~> 3.2.0'
 
+gem 'httparty'
+gem 'pry-rails'
 
 group :development do
   gem 'spring'
@@ -19,6 +21,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'factory_girl_rails'
   gem 'shoulda-matchers'
