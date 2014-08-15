@@ -1,27 +1,34 @@
-<h1>Services</h1>
+<div class="row services-title">
+  <div class="col-md-6">
+    <h1>Services</h1>
+  </div>
+  <div class="col-md-6">
+    <%= link_to 'New Service', new_service_path, class: "btn btn-primary pull-right" %>
+  </div>
+</div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @services.each do |service| %>
-      <tr>
-        <td><%= service.title %></td>
-        <td><%= service.description %></td>
-        <td><%= link_to 'Show', service %></td>
-        <td><%= link_to 'Edit', edit_service_path(service) %></td>
-        <td><%= link_to 'Destroy', service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Service', new_service_path %>
+<% @services.each do |service| %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <%= link_to service do %>
+        <h3 class="panel-title">
+          <%= service.title %>
+        </h3>
+      <% end %>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <% service.latest_three_metrics.each do |metric| %>
+          <%= link_to metric do %>
+            <div class="col-md-4">
+              <%= metric_chart(metric.id) %>                                  
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <%= service.description.truncate(200) %>
+    </div>
+  </div>
+<% end %>

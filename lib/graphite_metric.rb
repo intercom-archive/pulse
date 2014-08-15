@@ -18,14 +18,14 @@ class GraphiteMetric
       Rails.logger.info("#{e.inspect}")
       return []
     end
-    response.first.datapoints
+    response.first['datapoints']
   end
 
   private
   def default_options
     {
       :format => "json",
-      :from => "-1hours",
+      :from => "-10minutes",
       :title => @name,
       :target => @identifier,
     }

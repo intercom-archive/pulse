@@ -1,12 +1,16 @@
 class MetricsController < ApplicationController
   before_action :set_metric, only: [:show, :edit, :update, :destroy]
-  before_action :set_service
+  before_action :set_service, only: [:index, :new, :create]
 
   def index
-    @metrics = @service.metrics.all
+    @metrics = @service.metrics
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json { render json: { datapoints: @metric.graphite_data } }
+    end
   end
 
   def new
@@ -20,7 +24,7 @@ class MetricsController < ApplicationController
     @metric = @service.metrics.new(metric_params)
 
     if @metric.save
-      redirect_to [@service, @metric], notice: 'Metric was successfully created.'
+      redirect_to @metric, notice: 'Metric was successfully created.'
     else
       render :new
     end
@@ -28,15 +32,16 @@ class MetricsController < ApplicationController
 
   def update
     if @metric.update(metric_params)
-      redirect_to [@service, @metric], notice: 'Metric was successfully updated.'
+      redirect_to @metric, notice: 'Metric was successfully updated.'
     else
       render :edit
     end
   end
 
   def destroy
+    service = @metric.service
     @metric.destroy
-    redirect_to service_metrics_url, notice: 'Metric was successfully destroyed.'
+    redirect_to service, notice: 'Metric was successfully destroyed.'
   end
 
   private
