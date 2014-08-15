@@ -22,9 +22,9 @@
         <td><%= metric.summary %></td>
         <td><%= metric.mitigation_steps %></td>
         <td><%= metric.contact %></td>
-        <td><%= link_to 'Show', service_metric_path(metric.service, metric) %></td>
-        <td><%= link_to 'Edit', edit_service_metric_path(metric.service, metric) %></td>
-        <td><%= link_to 'Destroy', [metric.service, metric], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', metric_path(metric) %></td>
+        <td><%= link_to 'Edit', edit_metric_path(metric) %></td>
+        <td><%= link_to 'Destroy', metric, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

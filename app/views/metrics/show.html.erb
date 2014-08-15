@@ -29,3 +29,11 @@
   <strong>Contact:</strong>
   <%= @metric.contact %>
 </p>
+
+
+<h4>Graph</h4>
+
+<%= metric_chart(@metric.id, size: :big) %>
+
+
+<%= link_to "Delete metric", @metric, method: :delete, class: "btn btn-danger" %>

@@ -132,7 +132,7 @@ RSpec.describe ServicesController, :type => :controller do
     it "redirects to the services list" do
       service = Service.create! valid_attributes
       delete :destroy, {:id => service.to_param}
-      expect(response).to redirect_to(services_url)
+      expect(response).to redirect_to(services_path)
     end
   end
 

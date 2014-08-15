@@ -45,7 +45,7 @@ RSpec.describe MetricsController, :type => :controller do
   describe "GET edit" do
     it "assigns the requested metric as @metric" do
       metric = Metric.create! valid_attributes
-      get :edit, { :service_id => service.to_param, :id => metric.to_param }
+      get :edit, { :id => metric.to_param }
       expect(assigns(:metric)).to eq(metric)
     end
   end
@@ -66,7 +66,7 @@ RSpec.describe MetricsController, :type => :controller do
 
       it "redirects to the created metric" do
         post :create, { :service_id => service.to_param, :metric => valid_attributes }
-        expect(response).to redirect_to([service, Metric.last])
+        expect(response).to redirect_to(Metric.last)
       end
     end
 
@@ -92,34 +92,34 @@ RSpec.describe MetricsController, :type => :controller do
       it "updates the requested metric" do
         metric = Metric.create! valid_attributes
         expect(metric.summary).to_not eq(new_attributes[:summary])
-        put :update, { :service_id => service.to_param, :id => metric.to_param, :metric => new_attributes }
+        put :update, { :id => metric.to_param, :metric => new_attributes }
         metric.reload
         expect(metric.summary).to eq(new_attributes[:summary])
       end
 
       it "assigns the requested metric as @metric" do
         metric = Metric.create! valid_attributes
-        put :update, { :service_id => service.to_param, :id => metric.to_param, :metric => valid_attributes }
+        put :update, { :id => metric.to_param, :metric => valid_attributes }
         expect(assigns(:metric)).to eq(metric)
       end
 
       it "redirects to the metric" do
         metric = Metric.create! valid_attributes
-        put :update, { :service_id => service.to_param, :id => metric.to_param, :metric => valid_attributes }
-        expect(response).to redirect_to([service, metric])
+        put :update, { :id => metric.to_param, :metric => valid_attributes }
+        expect(response).to redirect_to(metric)
       end
     end
 
     describe "with invalid params" do
       it "assigns the metric as @metric" do
         metric = Metric.create! valid_attributes
-        put :update, { :service_id => service.to_param, :id => metric.to_param, :metric => invalid_attributes }
+        put :update, { :id => metric.to_param, :metric => invalid_attributes }
         expect(assigns(:metric)).to eq(metric)
       end
 
       it "re-renders the 'edit' template" do
         metric = Metric.create! valid_attributes
-        put :update, { :service_id => service.to_param, :id => metric.to_param, :metric => invalid_attributes }
+        put :update, { :id => metric.to_param, :metric => invalid_attributes }
         expect(response).to render_template("edit")
       end
     end
@@ -129,14 +129,14 @@ RSpec.describe MetricsController, :type => :controller do
     it "destroys the requested metric" do
       metric = Metric.create! valid_attributes
       expect {
-        delete :destroy, { :service_id => service.to_param, :id => metric.to_param }
+        delete :destroy, { :id => metric.to_param }
       }.to change(Metric, :count).by(-1)
     end
 
     it "redirects to the metrics list" do
       metric = Metric.create! valid_attributes
-      delete :destroy, { :service_id => service.to_param, :id => metric.to_param }
-      expect(response).to redirect_to(service_metrics_url)
+      delete :destroy, { :id => metric.to_param }
+      expect(response).to redirect_to(metric.service)
     end
   end
 
