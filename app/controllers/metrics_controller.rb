@@ -55,6 +55,7 @@ class MetricsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def metric_params
-      params.require(:metric).permit(:title, :datapoint_source, :datapoint_name, :summary, :mitigation_steps, :contact)
+      params.require(:metric).permit(:title, :datapoint_source, :datapoint_name, :summary, :mitigation_steps, :contact,
+                                     :cloudwatch_namespace, :cloudwatch_identifier)
     end
 end
