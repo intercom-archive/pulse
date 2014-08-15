@@ -15,6 +15,18 @@
   <%= @metric.datapoint_name %>
 </p>
 
+<% if @metric.datapoint_source == 'cloudwatch' %>
+<p>
+  <strong>Cloudwatch namespace:</strong>
+  <%= @metric.cloudwatch_namespace %>
+</p>
+
+<p>
+  <strong>Cloudwatch identifier:</strong>
+  <%= @metric.cloudwatch_identifier %>
+</p>
+<% end %>
+
 <p>
   <strong>Summary:</strong>
   <%= @metric.summary %>
