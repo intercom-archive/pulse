@@ -1,0 +1,45 @@
+<div class="panel panel-default service-panel">
+  <div class="panel-heading">
+    <div class="pull-left">
+      <%= link_to service do %>
+        <h2 class="panel-title">
+          <%= service.title %>
+        </h2>
+      <% end %>
+    </div>
+    <div class="btn-group pull-right">
+      <%= link_to edit_service_path(service), class: "btn btn-info" do %>
+        <%= i('edit') %> Edit
+      <% end %>
+      <%= link_to service, method: :delete, class: "btn btn-danger",
+                  data: { confirm: "Are you sure you want to delete the service '#{service.title}' and it's metrics?" } do %>
+        <%= i('trash-o') %>
+      <% end %>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <% metrics = service.last_n_metrics(metric_count) %>
+      <% metrics.each do |metric| %>
+        <%= link_to metric do %>
+          <div class="col-md-4">
+            <div><%= metric.title %></div>
+            <%= metric_chart(metric.id) %>
+          </div>
+        <% end %>
+      <% end %>
+      <% if metrics.empty? %>
+        <div class="text-center">
+          You haven't added any metrics yet!
+          <%= link_to new_service_metric_path(service), class: "btn btn-primary btn-xs" do %>
+            <%= i('bar-chart-o') %> Add Metric
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <small><%= service.description.truncate(200) %></small>
+  </div>
+</div>

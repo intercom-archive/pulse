@@ -1,34 +1,14 @@
 <div class="row services-title">
   <div class="col-md-6">
-    <h1>Services</h1>
+    <h1><%= i('cubes') %> Services</h1>
   </div>
   <div class="col-md-6">
-    <%= link_to 'New Service', new_service_path, class: "btn btn-primary pull-right" %>
+    <%= link_to new_service_path, class: "btn btn-primary btn-lg pull-right" do %>
+      <%= i('plus') %>
+    <% end %>
   </div>
 </div>
 
 <% @services.each do |service| %>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <%= link_to service do %>
-        <h3 class="panel-title">
-          <%= service.title %>
-        </h3>
-      <% end %>
-    </div>
-    <div class="panel-body">
-      <div class="row">
-        <% service.latest_three_metrics.each do |metric| %>
-          <%= link_to metric do %>
-            <div class="col-md-4">
-              <%= metric_chart(metric.id) %>                                  
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-    <div class="panel-footer">
-      <%= service.description.truncate(200) %>
-    </div>
-  </div>
+  <%= render "service_panel", service: service, metric_count: 3 %>
 <% end %>

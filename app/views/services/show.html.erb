@@ -1,12 +1,1 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @service.title %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @service.description %>
-</p>
-
+<%= render "service_panel", service: @service, metric_count: nil %>
