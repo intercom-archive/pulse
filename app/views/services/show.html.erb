@@ -1,1 +1,7 @@
+<p>
+  <%= link_to services_path, class: "btn btn-default", title: "All Services" do %>
+    <%= i("chevron-left") %> <%= i("cubes") %>
+  <% end %>
+</p>
+
 <%= render "service_panel", service: @service, metric_count: nil %>

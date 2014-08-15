@@ -1,3 +1,4 @@
+<% metrics = service.last_n_metrics(metric_count) %>
 <div class="panel panel-default service-panel">
   <div class="panel-heading">
     <div class="pull-left">
@@ -8,6 +9,11 @@
       <% end %>
     </div>
     <div class="btn-group pull-right">
+      <% if metrics.any? %>
+        <%= link_to new_service_metric_path(service), class: "btn btn-primary", title: "Add Metric" do %>
+          <%= i("plus") %> <%= i("bar-chart-o") %>
+        <% end %>
+      <% end %>
       <%= link_to edit_service_path(service), class: "btn btn-info" do %>
         <%= i('edit') %> Edit
       <% end %>
@@ -20,7 +26,6 @@
   </div>
   <div class="panel-body">
     <div class="row">
-      <% metrics = service.last_n_metrics(metric_count) %>
       <% metrics.each do |metric| %>
         <%= link_to metric do %>
           <div class="col-md-4">
