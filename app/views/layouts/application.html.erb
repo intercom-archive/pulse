@@ -33,6 +33,10 @@
 </div>
 
 <div class="container">
+  <% flash.each do |type, msg| %>
+    <%= flash_alert(type, msg) %>
+  <% end %>
+
   <%= yield %>
 </div>
 
