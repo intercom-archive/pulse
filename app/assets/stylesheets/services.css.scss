@@ -1,6 +1,6 @@
-// Place all the styles related to the Services controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+  padding-top: 60px;
+}
 
 .services-title {
   margin: 10px;
@@ -13,5 +13,15 @@
   .panel-title {
     font-size: 20px;
     line-height: 30px;
+  }
+}
+
+.metric-sidebar {
+  .list-group-item {
+    padding: 7px 7px;
+  }
+  .metric-attr-datapoint_name pre {
+    padding: 3px;
+    margin: 0;
   }
 }
