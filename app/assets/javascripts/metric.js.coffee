@@ -1,4 +1,4 @@
-jQuery ->
+$(document).on("page:change", ->
   $el = $('select#metric_datapoint_source')
   $cloudwatch_options = $('#cloudwatch-form-options')
   $el.change ->
@@ -6,3 +6,4 @@ jQuery ->
       $cloudwatch_options.hide().removeClass('hidden').show()
     else
       $cloudwatch_options.hide()
+)
