@@ -1,49 +1,52 @@
-<p>
-  <strong>Title:</strong>
-  <%= @metric.title %>
-</p>
+<div class="page-header">
+  <h1 title="Metric: <%= @metric.title %>">
+    <%= i('bar-chart-o') %>
+    <%= @metric.title %>
+    <small>
+      Source: <%= @metric.datapoint_source.capitalize %>
+    </small>
+  </h1>
+</div>
 
-<p>
-  <strong>Datapoint source:</strong>
-  <%= @metric.datapoint_source %>
-</p>
+<div class="row">
+  <div class="col-md-3">
+    <div class="list-group metric-sidebar">
+      <%= link_to services_path, class: "list-group-item", title: "All Services" do %>
+        <h5 class="list-group-item-heading">
+          <%= i("chevron-left") %> <%= i("cube") %> <%= @metric.service.title %>
+        </h5>
+      <% end %>
 
-<p>
-  <strong>Datapoint name:</strong>
-  <%= @metric.datapoint_name %>
-</p>
+      <div class="list-group-item metric-attr-datapoint_name">
+        <h5 class="list-group-item-heading">Datapoint Name</h5>
+        <%= content_tag(:pre, @metric.datapoint_name.split(".").join(".\n"), class: "list-group-item-text") %>
+      </div>
 
-<% if @metric.datapoint_source == 'cloudwatch' %>
-<p>
-  <strong>Cloudwatch namespace:</strong>
-  <%= @metric.cloudwatch_namespace %>
-</p>
+      <% @metric.sidebar_data.each do |name, value| %>
+        <div class="list-group-item metric-attr-<%= name %>">
+          <h5 class="list-group-item-heading">
+            <%= name.to_s.titleize %>:
+          </h5>
+          <p class="list-group-item-text">
+            <%= value %>
+          </p>
+        </div>
+      <% end %>
 
-<p>
-  <strong>Cloudwatch identifier:</strong>
-  <%= @metric.cloudwatch_identifier %>
-</p>
-<% end %>
-
-<p>
-  <strong>Summary:</strong>
-  <%= @metric.summary %>
-</p>
-
-<p>
-  <strong>Mitigation steps:</strong>
-  <%= @metric.mitigation_steps %>
-</p>
-
-<p>
-  <strong>Contact:</strong>
-  <%= @metric.contact %>
-</p>
-
-
-<h4>Graph</h4>
-
-<%= metric_chart(@metric.id, size: :big) %>
-
-
-<%= link_to "Delete metric", @metric, method: :delete, class: "btn btn-danger" %>
+      <div class="list-group-item">
+        <div class="btn-group">
+          <%= link_to edit_metric_path(@metric), class: "btn btn-info" do %>
+            <%= i('edit') %> Edit
+          <% end %>
+          <%= link_to @metric, method: :delete, class: "btn btn-danger",
+                      data: { confirm: "Are you sure you want to delete the metric '#{@metric.title}' and it's metrics?" } do %>
+            <%= i('trash-o') %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 panel panel-default">
+    <%= metric_chart(@metric.id, size: :big) %>
+  </div>
+</div>
