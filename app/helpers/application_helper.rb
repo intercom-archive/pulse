@@ -8,4 +8,9 @@ module ApplicationHelper
       data: { metric: metric_id, size: (opts[:size] || :small) }
     )
   end
+
+  def i(n, title: nil)
+    return "" unless n
+    content_tag(:i, nil, class: "fa fa-#{n}", title: title)
+  end
 end

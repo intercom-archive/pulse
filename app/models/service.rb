@@ -2,9 +2,9 @@ class Service < ActiveRecord::Base
   validates :title, presence: true
   validates :description, presence: true
 
-  has_many :metrics
+  has_many :metrics, dependent: :destroy
 
-  def latest_three_metrics
-    metrics.order(updated_at: :desc).limit(3)
+  def last_n_metrics(n)
+    metrics.order(updated_at: :desc).limit(n)
   end
 end
