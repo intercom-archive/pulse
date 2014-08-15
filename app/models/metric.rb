@@ -13,6 +13,10 @@ class Metric < ActiveRecord::Base
     datapoint_source == 'cloudwatch'
   end
 
+  def graphite_metric?
+    datapoint_source == 'graphite'
+  end
+
   def graphite_data
     @graphite_data ||= GraphiteMetric.new(title, datapoint_name).datapoints
   end
