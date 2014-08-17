@@ -23,7 +23,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Pulse</a>
+      <%= link_to "Pulse", github_authenticated? ? services_path : root_path, class: "navbar-brand" %>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -32,13 +32,15 @@
   </div>
 </div>
 
-<div class="container">
-  <% flash.each do |type, msg| %>
-    <%= flash_alert(type, msg) %>
-  <% end %>
-
+<% if @no_container %>
+  <%= all_flash_alerts %>
   <%= yield %>
-</div>
+<% else %>
+  <div class="container">
+    <%= all_flash_alerts %>
+    <%= yield %>
+  </div>
+<% end %>
 
 </body>
 </html>

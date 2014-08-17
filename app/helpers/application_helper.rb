@@ -26,4 +26,10 @@ module ApplicationHelper
       button_tag("&times;".html_safe, data: { dismiss: "alert" }, class: "close").html_safe
     end
   end
+
+  def all_flash_alerts
+    content_tag(:div) do
+      flash.collect { |type, msg| concat(flash_alert(type, msg)) }
+    end
+  end
 end
