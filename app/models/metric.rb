@@ -1,6 +1,10 @@
 class Metric < ActiveRecord::Base
   DATAPOINT_SOURCE_VALUES = %w(graphite cloudwatch)
+<<<<<<< HEAD
   CLOUDWATCH_NAMESPACES = %w(AWS/ELB AWS/RDS AWS/SNS AWS/SQS)
+=======
+  CLOUDWATCH_NAMESPACES = %w(AWS/EC2 AWS/RDS AWS/SNS AWS/SQS)
+>>>>>>> Add Cloudwatch namespace, remove freeze
 
   belongs_to :service
 
