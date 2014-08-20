@@ -1,10 +1,6 @@
 class Metric < ActiveRecord::Base
   DATAPOINT_SOURCE_VALUES = %w(graphite cloudwatch)
-<<<<<<< HEAD
-  CLOUDWATCH_NAMESPACES = %w(AWS/ELB AWS/RDS AWS/SNS AWS/SQS)
-=======
   CLOUDWATCH_NAMESPACES = %w(AWS/EC2 AWS/RDS AWS/SNS AWS/SQS)
->>>>>>> Add Cloudwatch namespace, remove freeze
 
   belongs_to :service
 
@@ -23,13 +19,18 @@ class Metric < ActiveRecord::Base
     datapoint_source == 'graphite'
   end
 
-  def graphite_data
-    @graphite_data ||= GraphiteMetric.new(title, datapoint_name).datapoints
+  def datapoints
+    return @datapoints unless @datapoints.nil?
+    if cloudwatch_metric?
+      @datapoints = CloudwatchMetric.new(cloudwatch_namespace, datapoint_name, cloudwatch_identifier).datapoints
+    else
+      @datapoints = GraphiteMetric.new(title, datapoint_name).datapoints
+    end
   end
 
   def sidebar_data
     attrs = [:summary, :mitigation_steps, :contact]
-    attrs.concat([:cloudwatch_namespace, :cloudwatch_namespace]) if cloudwatch_metric?
+    attrs.concat([:cloudwatch_namespace, :cloudwatch_identifier]) if cloudwatch_metric?
     attrs.reduce({}) do |hsh, attr|
       hsh[attr] = send(attr)
       hsh
