@@ -1,12 +1,18 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
+  sequence (:title) { |n| "Test Metric #{n}" }
+  sequence (:datapoint_source) { %w(graphite cloudwatch).sample }
+  sequence (:datapoint_name) { |n| "metric#{n}" }
+
   factory :metric do
-    title "MyString"
-    datapoint_source ""
-    datapoint_name "MyString"
-    summary "MyText"
-    mitigation_steps "MyString"
-    contact "MyString"
+    title
+    datapoint_source
+    datapoint_name
+    summary "Metric Summary"
+    mitigation_steps "Migitation Steps"
+    contact "It's only a test"
+    cloudwatch_namespace "AWS/EC2"
+    cloudwatch_identifier "some-id"
   end
 end

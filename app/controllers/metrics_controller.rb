@@ -9,7 +9,7 @@ class MetricsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: { datapoints: @metric.graphite_data } }
+      format.json { render json: { datapoints: @metric.datapoints } }
     end
   end
 
