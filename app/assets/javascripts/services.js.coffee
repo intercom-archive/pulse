@@ -5,7 +5,8 @@
 class Chart
   constructor: (el) ->
     @el = el
-    @metricId = el.data('metric')
+    @metricId = el.data('metric-id')
+    @metricTitle = el.data('title')
     @chartSize = el.data('size')
 
     options = _.merge(_.cloneDeep(@chartOptions.default), @chartOptions[@chartSize || {}])
@@ -19,12 +20,15 @@ class Chart
     @
 
   insertMetricData: (formattedTimeseries) -> # must be like { times: [t,t,t], points: [4,2,3] }
-    @c3object.load(
+    data =
       columns: [
         (['x']).concat(formattedTimeseries.times)
-        (['metric']).concat(formattedTimeseries.points)
+        ([@metricTitle]).concat(formattedTimeseries.points)
       ]
-    )
+    data.types = {}
+    data.types[@metricTitle] = 'area'
+
+    @c3object.load(data)
 
   getMetricData: ->
     $.getJSON("/metrics/" + @metricId + ".json")
@@ -62,27 +66,49 @@ class Chart
         x: 'x'
         columns: [
           ['x', 1]
-          ['metric', -1]
         ]
-        types: { metric: 'area' }
+      color:
+        pattern: ['#339966']
       axis:
         x:
-          type: 'timeseries'
-          tick: { format: '%X' }
-        y: { padding: { top: 50, bottom: 0 } }
+          show: true
+          type: 'timeseries',
+          tick: {
+            count: 4,
+            format: '%H:%M'
+          }
+          padding:
+            bottom: 5
+        y:
+          min: 0
+          show: false
       grid:
-        x: { show: true }
-        y: { show: true }
-      legend: { show: false }
+        x:
+          show: false
+        y:
+          show: false
+      legend:
+        show: true
     big:
-      zoom: { enabled: true }
-      subchart: { show: true }
-      size: { height: 500 }
+      zoom:
+        enabled: true
+      subchart:
+        show: true
+      size:
+        height: 500
       axis:
-        x: { tick: { count: 16} }
+        x:
+          tick:
+            count: 16
+        y:
+          show: true
     small:
-      axis:
-        x: { tick: { count: 5} }
+      point:
+        show: false
+      size:
+        height: 100
+      tooltip:
+        show: false
 
 
 chartsOpen = {}
