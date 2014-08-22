@@ -12,7 +12,14 @@ RSpec.describe MetricsController, :type => :controller do
   }
 
   let(:valid_attributes) {
-    { title: "P95 Latency", datapoint_source: "graphite", datapoint_name: "stats.api.latency.p95", service_id: service.id }
+    {
+      title: "P95 Latency",
+      datapoint_source: "graphite",
+      datapoint_name: "stats.api.latency.p95",
+      service_id: service.id,
+      alarm_warning: 20,
+      alarm_error: 40
+    }
   }
 
   let(:invalid_attributes) {

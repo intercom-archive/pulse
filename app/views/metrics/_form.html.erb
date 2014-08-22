@@ -35,6 +35,18 @@
     </div>
   </div>
   <div class="form-group">
+    <%= f.label :alarm_warning %><br>
+    <%= f.text_field :alarm_warning, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :alarm_error %><br>
+    <%= f.text_field :alarm_error, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :negative_alarming %><br>
+    <%= f.check_box :negative_alarming %>
+  </div>
+  <div class="form-group">
     <%= f.label :summary %><br>
     <%= f.text_area :summary, class: 'form-control' %>
   </div>
