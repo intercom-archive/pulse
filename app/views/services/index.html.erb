@@ -9,7 +9,7 @@
 
 <table class="table table-condensed table-striped">
   <thead>
-      <th class="col-sm-1">Service <%= link_to new_service_path, class: "" do %>
+      <th class="col-sm-1">Service <%= link_to new_service_path do %>
             <%= i('plus') %>
         <% end %></th>
       <th class="col-sm-2">&nbsp;</th>
@@ -30,7 +30,9 @@
       </td>
       <% metrics.each do |metric| %>
       <td>
+        <%= link_to metric, class: "no-hover-underline" do %>
           <%= metric_chart(metric.title, metric.id) %>
+        <% end %>
       </td>
       <% end %>
       <% if metrics_count < desired_metrics %>
