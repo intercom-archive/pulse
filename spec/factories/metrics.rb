@@ -14,5 +14,7 @@ FactoryGirl.define do
     contact "It's only a test"
     cloudwatch_namespace "AWS/EC2"
     cloudwatch_identifier "some-id"
+    alarm_warning 5
+    alarm_error 20
   end
 end

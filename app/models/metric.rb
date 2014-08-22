@@ -7,6 +7,8 @@ class Metric < ActiveRecord::Base
   validates :title, presence: true
   validates :datapoint_source, inclusion: { in: DATAPOINT_SOURCE_VALUES }
   validates :datapoint_name, presence: true
+  validates :alarm_warning, presence: true
+  validates :alarm_error, presence: true
 
   validates :cloudwatch_namespace, inclusion: { in: CLOUDWATCH_NAMESPACES }, if: :cloudwatch_metric?
   validates :cloudwatch_identifier, presence: true, if: :cloudwatch_metric?

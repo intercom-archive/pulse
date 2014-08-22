@@ -4,13 +4,21 @@ RSpec.describe Metric, :type => :model do
   it { should validate_presence_of(:title) }
   it { should ensure_inclusion_of(:datapoint_source).in_array(Metric::DATAPOINT_SOURCE_VALUES) }
   it { should validate_presence_of(:datapoint_name) }
+  it { should validate_presence_of(:alarm_warning) }
+  it { should validate_presence_of(:alarm_error) }
   it { should belong_to(:service) }
 
   let(:graphite_metric) { Metric.new()}
 
   context "Graphite Metric" do
     let(:valid_attributes) {
-      { title: "test_metric", datapoint_source: "graphite", datapoint_name: "my.graphite.metric" }
+      {
+          title: "test_metric",
+          datapoint_source: "graphite",
+          datapoint_name: "my.graphite.metric",
+          alarm_warning: 20,
+          alarm_error: 40
+      }
     }
     let(:metric) { Metric.new(valid_attributes) }
 
@@ -51,7 +59,9 @@ RSpec.describe Metric, :type => :model do
           datapoint_source: "cloudwatch",
           datapoint_name: "CPUUtilization",
           cloudwatch_namespace: "AWS/EC2",
-          cloudwatch_identifier: "some-lb-name"
+          cloudwatch_identifier: "some-lb-name",
+          alarm_warning: 20,
+          alarm_error: 40
       }
     }
     let(:metric) { Metric.new(valid_attributes) }
