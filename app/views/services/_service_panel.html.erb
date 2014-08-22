@@ -29,8 +29,7 @@
       <% metrics.each do |metric| %>
         <%= link_to metric do %>
           <div class="col-md-4">
-            <div><%= metric.title %></div>
-            <%= metric_chart(metric.id) %>
+            <%= metric_chart(metric.title, metric.id) %>
           </div>
         <% end %>
       <% end %>
