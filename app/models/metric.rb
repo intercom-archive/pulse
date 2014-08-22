@@ -31,7 +31,7 @@ class Metric < ActiveRecord::Base
   end
 
   def sidebar_data
-    attrs = [:summary, :mitigation_steps, :contact]
+    attrs = [:summary, :alarm_warning, :alarm_error, :negative_alarming?, :mitigation_steps, :contact]
     attrs.concat([:cloudwatch_namespace, :cloudwatch_identifier]) if cloudwatch_metric?
     attrs.reduce({}) do |hsh, attr|
       hsh[attr] = send(attr)

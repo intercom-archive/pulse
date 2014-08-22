@@ -48,6 +48,9 @@ RSpec.describe Metric, :type => :model do
         expect(metric.sidebar_data.key?(:summary)).to eq(true)
         expect(metric.sidebar_data.key?(:contact)).to eq(true)
         expect(metric.sidebar_data.key?(:mitigation_steps)).to eq(true)
+        expect(metric.sidebar_data.key?(:alarm_warning)).to eq(true)
+        expect(metric.sidebar_data.key?(:alarm_error)).to eq(true)
+        expect(metric.sidebar_data.key?(:negative_alarming?)).to eq(true)
       end
     end
   end
