@@ -57,7 +57,7 @@ RSpec.describe Metric, :type => :model do
     describe "#alarm_state" do
       before(:each) {
         lib = instance_double(GraphiteMetric)
-        expect(lib).to receive(:datapoints).and_return([
+        allow(lib).to receive(:datapoints).and_return([
           [30, 0],
           [432, 10],
           [2534, 20],
@@ -65,7 +65,7 @@ RSpec.describe Metric, :type => :model do
           [13, 40],
           [0, 50]
         ])
-        expect(GraphiteMetric).to receive(:new).and_return(lib)
+        allow(GraphiteMetric).to receive(:new).and_return(lib)
       }
 
       it "detects the metric in a normal state" do
@@ -155,12 +155,12 @@ RSpec.describe Metric, :type => :model do
     describe "#alarm_state" do
       before(:each) {
         lib = instance_double(CloudwatchMetric)
-        expect(lib).to receive(:datapoints).and_return([
+        allow(lib).to receive(:datapoints).and_return([
           [30, 0],
           [432, 10],
           [500, 20]
         ])
-        expect(CloudwatchMetric).to receive(:new).and_return(lib)
+        allow(CloudwatchMetric).to receive(:new).and_return(lib)
       }
 
       it "detects the metric in a normal state" do
