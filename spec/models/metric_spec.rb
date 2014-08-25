@@ -53,6 +53,61 @@ RSpec.describe Metric, :type => :model do
         expect(metric.sidebar_data.key?(:negative_alarming?)).to eq(true)
       end
     end
+
+    describe "#alarm_state" do
+      before(:each) {
+        lib = instance_double(GraphiteMetric)
+        expect(lib).to receive(:datapoints).and_return([
+          [30, 0],
+          [432, 10],
+          [2534, 20],
+          [312, 30],
+          [13, 40],
+          [0, 50]
+        ])
+        expect(GraphiteMetric).to receive(:new).and_return(lib)
+      }
+
+      it "detects the metric in a normal state" do
+        expect(metric.alarm_state).to eq("normal")
+      end
+
+      it "skips the last metric for Graphite (probably zero)" do
+        metric.alarm_error = 10
+        expect(metric.alarm_state).to_not eq("normal")
+      end
+
+      context "with regular alarming" do
+        it "detects the metric in a warning state" do
+          metric.alarm_warning = 10
+          expect(metric.alarm_state).to eq("warning")
+        end
+
+        it "detects the metric in an error state" do
+          metric.alarm_warning = 5
+          metric.alarm_error = 10
+          expect(metric.alarm_state).to eq("error")
+        end
+      end
+
+      context "with negative alarming" do
+        before(:each) {
+          metric.negative_alarming = true
+        }
+
+        it "detects the metric in a warning state" do
+          metric.alarm_warning = 20
+          metric.alarm_error = 10
+          expect(metric.alarm_state).to eq("warning")
+        end
+
+        it "detects the metric in an error state" do
+          metric.alarm_warning = 20
+          metric.alarm_error = 15
+          expect(metric.alarm_state).to eq("error")
+        end
+      end
+    end
   end
 
   context "Cloudwatch Metric" do
@@ -63,8 +118,8 @@ RSpec.describe Metric, :type => :model do
           datapoint_name: "CPUUtilization",
           cloudwatch_namespace: "AWS/EC2",
           cloudwatch_identifier: "some-lb-name",
-          alarm_warning: 20,
-          alarm_error: 40
+          alarm_warning: 500,
+          alarm_error: 600
       }
     }
     let(:metric) { Metric.new(valid_attributes) }
@@ -94,6 +149,27 @@ RSpec.describe Metric, :type => :model do
       it "includes the cloudwatch specific data in the sidebar" do
         expect(metric.sidebar_data.key?(:cloudwatch_namespace)).to eq(true)
         expect(metric.sidebar_data.key?(:cloudwatch_identifier)).to eq(true)
+      end
+    end
+
+    describe "#alarm_state" do
+      before(:each) {
+        lib = instance_double(CloudwatchMetric)
+        expect(lib).to receive(:datapoints).and_return([
+          [30, 0],
+          [432, 10],
+          [500, 20]
+        ])
+        expect(CloudwatchMetric).to receive(:new).and_return(lib)
+      }
+
+      it "detects the metric in a normal state" do
+        expect(metric.alarm_state).to eq("normal")
+      end
+
+      it "does not skip the last metric for Cloudwatch" do
+        metric.alarm_error = 450
+        expect(metric.alarm_state).to eq("error")
       end
     end
   end

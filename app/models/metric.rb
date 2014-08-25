@@ -30,6 +30,12 @@ class Metric < ActiveRecord::Base
     end
   end
 
+  def alarm_state
+    return 'error' if alarm_error?
+    return 'warning' if alarm_warning?
+    'normal'
+  end
+
   def sidebar_data
     attrs = [:summary, :alarm_warning, :alarm_error, :negative_alarming?, :mitigation_steps, :contact]
     attrs.concat([:cloudwatch_namespace, :cloudwatch_identifier]) if cloudwatch_metric?
@@ -38,4 +44,21 @@ class Metric < ActiveRecord::Base
       hsh
     end
   end
+
+  private
+    def latest_datapoint
+      return datapoints[-2].first if graphite_metric?
+      datapoints.last.first
+    end
+
+    def alarm_error?
+      return latest_datapoint < alarm_error if negative_alarming?
+      latest_datapoint > alarm_error
+    end
+
+    def alarm_warning?
+      return false if alarm_error?
+      return latest_datapoint < alarm_warning if negative_alarming?
+      latest_datapoint > alarm_warning
+    end
 end
