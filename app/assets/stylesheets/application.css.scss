@@ -25,3 +25,17 @@
 a.no-hover-underline:hover {
   text-decoration: none;
 }
+
+.c3-ygrid-line.alarm-warning line {
+  stroke: orange;
+}
+.c3-ygrid-line.alarm-warning text {
+  fill: orange;
+}
+
+.c3-ygrid-line.alarm-error line {
+  stroke: red;
+}
+.c3-ygrid-line.alarm-error text {
+  fill: red;
+}
