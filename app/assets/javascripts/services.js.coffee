@@ -9,8 +9,7 @@ class Chart
     @metricTitle = el.data('title')
     @chartSize = el.data('size')
 
-    options = _.merge(_.cloneDeep(@chartOptions.default), @chartOptions[@chartSize || {}])
-    options.bindto = '#metric-chart-' + @metricId
+    options = @buildChartOptions()
     @c3object = c3.generate(options)
     
     @updateChartNow()
@@ -18,6 +17,11 @@ class Chart
       @updateChartEvery(10)
 
     @
+
+  buildChartOptions: ->
+    options = _.merge(_.cloneDeep(@chartOptions.default), @chartOptions[@chartSize || {}])
+    options.bindto = '#metric-chart-' + @metricId
+    options
 
   insertMetricData: (formattedTimeseries) -> # must be like { times: [t,t,t], points: [4,2,3] }
     data =
@@ -46,6 +50,9 @@ class Chart
     self = this
     @getMetricData().done((data) ->
       self.insertMetricData(self.formatDataForC3(data.datapoints))
+      self.setAlarmLines(data.alarm.warning, data.alarm.error)
+      self.setGraphColor(data.alarm.state)
+      self.setGraphYRange(data.datapoints, data.alarm.warning, data.alarm.error)
     )
 
   updateChartEvery: (seconds) ->
@@ -53,6 +60,32 @@ class Chart
     @updateInterval = setInterval(->
       self.updateChartNow()
     , seconds * 1000)
+
+  setAlarmLines: (warningLevel, errorLevel) ->
+    warningText = 'Warning (' + warningLevel + ')' if @chartSize == 'big'
+    errorText = 'Error (' + errorLevel + ')' if @chartSize == 'big'
+
+    @c3object.ygrids([
+      { value: warningLevel, text: warningText , class: 'alarm-warning' },
+      { value: errorLevel, text: errorText, class: 'alarm-error' }
+    ])
+
+  setGraphYRange: (datapoints, warningLevel, errorLevel) ->
+    yMax = warningLevel
+    yMax = errorLevel if errorLevel > warningLevel
+    console.log(yMax)
+    max = datapoints.reduce ((max, arr) -> Math.max max, arr[0]), -Infinity
+    yMax = max if max > yMax
+    console.log(yMax)
+    console.log("Setting c3Object yaxis max")
+    @c3object.axis.max({y: yMax})
+
+  setGraphColor: (state) ->
+    colors = {}
+    colors[@metricTitle] = '#339966'
+    colors[@metricTitle] = '#f29d50' if state == 'warning'
+    colors[@metricTitle] = '#a94442' if state == 'error'
+    @c3object.data.colors(colors)
 
   destroy: ->
     @c3object.data.targets = [];
@@ -67,8 +100,6 @@ class Chart
         columns: [
           ['x', 1]
         ]
-      color:
-        pattern: ['#339966']
       axis:
         x:
           show: true
