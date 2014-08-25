@@ -9,7 +9,15 @@ class MetricsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: { datapoints: @metric.datapoints } }
+      format.json { render json: {
+          datapoints: @metric.datapoints,
+          alarm: {
+            error: @metric.alarm_error,
+            state: @metric.alarm_state,
+            warning: @metric.alarm_warning
+          }
+        }
+      }
     end
   end
 
