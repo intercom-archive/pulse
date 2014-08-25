@@ -73,11 +73,8 @@ class Chart
   setGraphYRange: (datapoints, warningLevel, errorLevel) ->
     yMax = warningLevel
     yMax = errorLevel if errorLevel > warningLevel
-    console.log(yMax)
     max = datapoints.reduce ((max, arr) -> Math.max max, arr[0]), -Infinity
     yMax = max if max > yMax
-    console.log(yMax)
-    console.log("Setting c3Object yaxis max")
     @c3object.axis.max({y: yMax})
 
   setGraphColor: (state) ->
