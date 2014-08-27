@@ -17,7 +17,7 @@
   </div>
   <div class="form-group">
     <%= f.label :datapoint_source %><br>
-    <%= f.select :datapoint_source, options_for_select(Metric::DATAPOINT_SOURCE_VALUES), {}, class: 'form-control' %>
+    <%= f.select :datapoint_source, options_for_select(Metric::DATAPOINT_SOURCE_VALUES,  @metric.datapoint_source), {}, class: 'form-control' %>
   </div>
   <div class="form-group">
     <%= f.label :datapoint_name %><br>
@@ -26,13 +26,25 @@
   <div id="cloudwatch-form-options"<% unless @metric.cloudwatch_metric? %> class="hidden"<% end %>>
     <div class="form-group">
       <%= f.label :cloudwatch_namespace %><br>
-      <%= f.select :cloudwatch_namespace, options_for_select(Metric::CLOUDWATCH_NAMESPACES), {}, class: 'form-control' %>
+      <%= f.select :cloudwatch_namespace, options_for_select(Metric::CLOUDWATCH_NAMESPACES, @metric.cloudwatch_namespace), {}, class: 'form-control' %>
     </div>
 
     <div class="form-group">
       <%= f.label :cloudwatch_identifier %><br>
       <%= f.text_field :cloudwatch_identifier, class: 'form-control' %>
     </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :alarm_warning %><br>
+    <%= f.text_field :alarm_warning, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :alarm_error %><br>
+    <%= f.text_field :alarm_error, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :negative_alarming %><br>
+    <%= f.check_box :negative_alarming %>
   </div>
   <div class="form-group">
     <%= f.label :summary %><br>

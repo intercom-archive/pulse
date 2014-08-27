@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140815100954) do
+ActiveRecord::Schema.define(version: 20140822101717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,9 @@ ActiveRecord::Schema.define(version: 20140815100954) do
     t.integer  "service_id"
     t.string   "cloudwatch_namespace"
     t.string   "cloudwatch_identifier"
+    t.float    "alarm_warning"
+    t.float    "alarm_error"
+    t.boolean  "negative_alarming",     default: false, null: false
   end
 
   add_index "metrics", ["service_id"], name: "index_metrics_on_service_id", using: :btree
