@@ -138,7 +138,6 @@ class Chart
       tooltip:
         show: false
 
-
 chartsOpen = {}
 $(document).on("page:change", ->
   _.each(chartsOpen, (c) ->
@@ -147,5 +146,34 @@ $(document).on("page:change", ->
   $(".metric-chart").each( ->
     chart = new Chart($(this))
     chartsOpen["chart_#{chart.metricId}_#{chart.chartSize}"] = chart
+  )
+
+  displayTimeFormat = 'YYYY-MM-DD HH:mm'
+  timeFormat = 'YYYYMMDDHHmm'
+  startTime = moment($('input[name="start_time"]').val(), timeFormat) if $('input[name="start_time"]').val()
+  endTime = moment($('input[name="end_time"]').val(), timeFormat) if $('input[name="end_time"]').val()
+  $('input[class*="daterange"]').val(startTime.format(displayTimeFormat) + ' - ' + endTime.format(displayTimeFormat)) if startTime && endTime
+
+  $('input[class*="daterange"]').daterangepicker(
+    {
+      ranges:
+        'Last 10 minutes': [moment().subtract('minutes', 10), new Date()],
+        'Last 30 minutes': [moment().subtract('minutes', 30), new Date()],
+        'Last hour': [moment().subtract('hours', 1), new Date()],
+        'Last 4 hours': [moment().subtract('hours', 4), new Date()],
+        'Last Day': [moment().subtract('days', 1), new Date()],
+        'Last Week': [moment().subtract('days', 6), new Date()]
+      opens: 'right',
+      format: displayTimeFormat
+      minDate: moment().subtract('days', 7),
+      maxDate: new Date(),
+      timePicker: true,
+      timePickerIncrement: 1
+      startDate: startTime
+      endDate: endTime
+    },
+  (start, end) ->
+    $('input[name="start_time"]').val(start.format(timeFormat))
+    $('input[name="end_time"]').val(end.format(timeFormat))
   )
 )
