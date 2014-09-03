@@ -36,4 +36,22 @@ RSpec.describe GraphiteMetric, :type => :library do
       expect(graphite_metric.datapoints).to eq([])
     end
   end
+
+  describe "#start_time=" do
+    it "sets the start time in unix form for fetching datapoints" do
+      now = Time.now
+      graphite_metric.start_time = now
+      opts = graphite_metric.instance_variable_get(:@options)
+      expect(opts[:from]).to eq(now.to_i)
+    end
+  end
+
+  describe "#end_time=" do
+    it "sets the end time in unix form for fetching datapoints" do
+      now = Time.now
+      graphite_metric.end_time = now
+      opts = graphite_metric.instance_variable_get(:@options)
+      expect(opts[:until]).to eq(now.to_i)
+    end
+  end
 end

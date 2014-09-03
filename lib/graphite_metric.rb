@@ -3,6 +3,8 @@ class GraphiteMetric
   GRAPHITE_PASSWORD = ENV['GRAPHITE_PASSWORD']
   GRAPHITE_BASE = ENV['GRAPHITE_URL']
 
+  attr_writer :start_time, :end_time
+
   def initialize(name, identifier)
     @name = name
     @identifier = identifier
@@ -10,7 +12,7 @@ class GraphiteMetric
   end
 
   def datapoints
-    auth = { username: GRAPHITE_USER, password: GRAPHITE_PASSWORD }
+    auth = { username: GraphiteMetric::GRAPHITE_USER, password: GraphiteMetric::GRAPHITE_PASSWORD }
     begin
       response = HTTParty.get(url, :basic_auth => auth, :timeout => 5)
     rescue Exception => e
@@ -21,17 +23,26 @@ class GraphiteMetric
     response.first['datapoints']
   end
 
-  private
-  def default_options
-    {
-      :format => "json",
-      :from => "-10minutes",
-      :title => @name,
-      :target => @identifier,
-    }
+  def start_time=(time)
+    @options[:from] = time.to_i
   end
 
-  def url
-    "#{GRAPHITE_BASE}/render/?#{@options.to_query}"
+  def end_time=(time)
+    @options[:until] = time.to_i
   end
+
+  private
+    def default_options
+      {
+        :format => "json",
+        :from => "-10minutes",
+        :title => @name,
+        :target => @identifier,
+        :until => nil
+      }
+    end
+
+    def url
+      "#{GRAPHITE_BASE}/render/?#{@options.to_query}"
+    end
 end
