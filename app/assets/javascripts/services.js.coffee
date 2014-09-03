@@ -167,18 +167,19 @@ class DateRangePicker
 
   getOptions: ->
     self = this
+    now = moment()
     {
       ranges:
-        'Last 10 minutes': [moment().subtract('minutes', 10), moment()],
-        'Last 30 minutes': [moment().subtract('minutes', 30), moment()],
-        'Last hour': [moment().subtract('hours', 1), moment()],
-        'Last 4 hours': [moment().subtract('hours', 4), moment()],
-        'Last Day': [moment().subtract('days', 1), moment()],
-        'Last Week': [moment().subtract('days', 6), moment()]
+        'Last 10 minutes': [now.clone().subtract('minutes', 10), now],
+        'Last 30 minutes': [now.clone().subtract('minutes', 30), now],
+        'Last hour': [now.clone().subtract('hours', 1), now],
+        'Last 4 hours': [now.clone().subtract('hours', 4), now],
+        'Last Day': [now.clone().subtract('days', 1), now],
+        'Last Week': [now.clone().subtract('days', 6), now]
       opens: 'right',
       format: self.displayTimeFormat
-      minDate: moment().subtract('days', 7),
-      maxDate: moment(),
+      minDate: now.clone().subtract('days', 7),
+      maxDate: now,
       timePicker: true,
       timePickerIncrement: 1
     }
