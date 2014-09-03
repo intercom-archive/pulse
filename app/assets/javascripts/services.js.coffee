@@ -13,9 +13,6 @@ class Chart
     @c3object = c3.generate(options)
     
     @updateChartNow()
-    if @chartSize is 'big'
-      @updateChartEvery(10)
-
     @
 
   buildChartOptions: ->
