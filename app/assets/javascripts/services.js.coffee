@@ -8,6 +8,11 @@ class Chart
     @metricId = el.data('metric-id')
     @metricTitle = el.data('title')
     @chartSize = el.data('size')
+    @enableAlarming = true
+    @datapointStartTime = $('input[name="start_time"]').val()
+    @datapointEndTime = $('input[name="end_time"]').val()
+
+    @enableAlarming = false if @datapointStartTime && @datapointEndTime
 
     options = @buildChartOptions()
     @c3object = c3.generate(options)
@@ -32,7 +37,9 @@ class Chart
     @c3object.load(data)
 
   getMetricData: ->
-    $.getJSON("/metrics/" + @metricId + ".json")
+    url = "/metrics/" + @metricId + ".json"
+    url += '?start_time=' + @datapointStartTime + '&end_time=' + @datapointEndTime if @datapointStartTime && @datapointEndTime
+    $.getJSON(url)
 
   formatDataForC3: (datapointsArray) ->
     datapointsArray.pop()
