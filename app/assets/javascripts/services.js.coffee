@@ -135,42 +135,60 @@ class Chart
       tooltip:
         show: false
 
+
+class DateRangePicker
+  constructor: (el, $start_time, $end_time) ->
+    @el = el
+    @displayTimeFormat = 'YYYY-MM-DD HH:mm'
+    @timeFormat = 'YYYYMMDDHHmm'
+
+    startTime = moment($start_time.val(), @timeFormat) if $start_time.val()
+    endTime = moment($end_time.val(), @timeFormat) if $end_time.val()
+    @el.val(startTime.format(@displayTimeFormat) + ' - ' + endTime.format(@displayTimeFormat)) if startTime && endTime
+
+    @datePicker = @el.daterangepicker(@getOptions())
+    @attachEventHandler()
+
+  attachEventHandler: ->
+    self = this
+    @datePicker.on('show.daterangepicker', (ev, picker) ->
+      picker.setOptions(self.getOptions())
+    )
+    @datePicker.on('apply.daterangepicker', (ev, picker) ->
+      $('input[name="start_time"]').val(picker.startDate.clone().utc().format(self.timeFormat))
+      $('input[name="end_time"]').val(picker.endDate.clone().utc().format(self.timeFormat))
+    )
+
+  getOptions: ->
+    self = this
+    {
+      ranges:
+        'Last 10 minutes': [moment().subtract('minutes', 10), moment()],
+        'Last 30 minutes': [moment().subtract('minutes', 30), moment()],
+        'Last hour': [moment().subtract('hours', 1), moment()],
+        'Last 4 hours': [moment().subtract('hours', 4), moment()],
+        'Last Day': [moment().subtract('days', 1), moment()],
+        'Last Week': [moment().subtract('days', 6), moment()]
+      opens: 'right',
+      format: self.displayTimeFormat
+      minDate: moment().subtract('days', 7),
+      maxDate: moment(),
+      timePicker: true,
+      timePickerIncrement: 1
+    }
+
 chartsOpen = {}
 $(document).on("page:change", ->
   _.each(chartsOpen, (c) ->
     c.destroy()
   )
+
+  $('input[class*="daterange"]').each( ->
+    new DateRangePicker($(this), $('input[name="start_time"]'), $('input[name="end_time"]'))
+  )
+
   $(".metric-chart").each( ->
     chart = new Chart($(this))
     chartsOpen["chart_#{chart.metricId}_#{chart.chartSize}"] = chart
-  )
-
-  displayTimeFormat = 'YYYY-MM-DD HH:mm'
-  timeFormat = 'YYYYMMDDHHmm'
-  startTime = moment($('input[name="start_time"]').val(), timeFormat) if $('input[name="start_time"]').val()
-  endTime = moment($('input[name="end_time"]').val(), timeFormat) if $('input[name="end_time"]').val()
-  $('input[class*="daterange"]').val(startTime.format(displayTimeFormat) + ' - ' + endTime.format(displayTimeFormat)) if startTime && endTime
-
-  $('input[class*="daterange"]').daterangepicker(
-    {
-      ranges:
-        'Last 10 minutes': [moment().subtract('minutes', 10), new Date()],
-        'Last 30 minutes': [moment().subtract('minutes', 30), new Date()],
-        'Last hour': [moment().subtract('hours', 1), new Date()],
-        'Last 4 hours': [moment().subtract('hours', 4), new Date()],
-        'Last Day': [moment().subtract('days', 1), new Date()],
-        'Last Week': [moment().subtract('days', 6), new Date()]
-      opens: 'right',
-      format: displayTimeFormat
-      minDate: moment().subtract('days', 7),
-      maxDate: new Date(),
-      timePicker: true,
-      timePickerIncrement: 1
-      startDate: startTime
-      endDate: endTime
-    },
-  (start, end) ->
-    $('input[name="start_time"]').val(start.format(timeFormat))
-    $('input[name="end_time"]').val(end.format(timeFormat))
   )
 )
