@@ -146,11 +146,10 @@ class Chart
 class DateRangePicker
   constructor: (el, $start_time, $end_time) ->
     @el = el
-    @displayTimeFormat = 'YYYY-MM-DD HH:mm'
-    @timeFormat = 'YYYYMMDDHHmm'
+    @displayTimeFormat = 'YYYY-MM-DD HH:mmZ'
 
-    startTime = moment($start_time.val(), @timeFormat) if $start_time.val()
-    endTime = moment($end_time.val(), @timeFormat) if $end_time.val()
+    startTime = moment.unix($start_time.val()) if $start_time.val()
+    endTime = moment.unix($end_time.val()) if $end_time.val()
     @el.val(startTime.format(@displayTimeFormat) + ' - ' + endTime.format(@displayTimeFormat)) if startTime && endTime
 
     @datePicker = @el.daterangepicker(@getOptions())
@@ -162,8 +161,8 @@ class DateRangePicker
       picker.setOptions(self.getOptions())
     )
     @datePicker.on('apply.daterangepicker', (ev, picker) ->
-      $('input[name="start_time"]').val(picker.startDate.clone().utc().format(self.timeFormat))
-      $('input[name="end_time"]').val(picker.endDate.clone().utc().format(self.timeFormat))
+      $('input[name="start_time"]').val(picker.startDate.unix())
+      $('input[name="end_time"]').val(picker.endDate.unix())
     )
 
   getOptions: ->
