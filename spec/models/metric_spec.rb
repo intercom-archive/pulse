@@ -41,6 +41,25 @@ RSpec.describe Metric, :type => :model do
         expect(GraphiteMetric).to receive(:new).and_return(lib)
         metric.datapoints
       end
+
+      it "sets the start time if a start time was provided" do
+        lib = instance_double(GraphiteMetric)
+        time = Time.now
+        expect(lib).to receive(:start_time=).with(time)
+        expect(lib).to receive(:datapoints).and_return([])
+        expect(GraphiteMetric).to receive(:new).and_return(lib)
+        metric.datapoints(time)
+      end
+
+      it "sets the end time if an end time was provided" do
+        lib = instance_double(GraphiteMetric)
+        time = Time.now
+        expect(lib).to receive(:start_time=)
+        expect(lib).to receive(:end_time=).with(time)
+        expect(lib).to receive(:datapoints).and_return([])
+        expect(GraphiteMetric).to receive(:new).and_return(lib)
+        metric.datapoints(time - 60, time)
+      end
     end
 
     describe "#sidebar_data" do
@@ -142,6 +161,25 @@ RSpec.describe Metric, :type => :model do
         expect(lib).to receive(:datapoints).and_return([])
         expect(CloudwatchMetric).to receive(:new).and_return(lib)
         metric.datapoints
+      end
+
+      it "sets the start time if a start time was provided" do
+        lib = instance_double(CloudwatchMetric)
+        time = Time.now
+        expect(lib).to receive(:start_time=).with(time)
+        expect(lib).to receive(:datapoints).and_return([])
+        expect(CloudwatchMetric).to receive(:new).and_return(lib)
+        metric.datapoints(time)
+      end
+
+      it "sets the end time if an end time was provided" do
+        lib = instance_double(CloudwatchMetric)
+        time = Time.now
+        expect(lib).to receive(:start_time=)
+        expect(lib).to receive(:end_time=).with(time)
+        expect(lib).to receive(:datapoints).and_return([])
+        expect(CloudwatchMetric).to receive(:new).and_return(lib)
+        metric.datapoints(time - 60, time)
       end
     end
 
