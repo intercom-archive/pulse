@@ -8,14 +8,16 @@ class Chart
     @metricId = el.data('metric-id')
     @metricTitle = el.data('title')
     @chartSize = el.data('size')
+    @enableAlarming = true
+    @datapointStartTime = $('input[name="start_time"]').val()
+    @datapointEndTime = $('input[name="end_time"]').val()
+
+    @enableAlarming = false if @datapointStartTime && @datapointEndTime
 
     options = @buildChartOptions()
     @c3object = c3.generate(options)
     
     @updateChartNow()
-    if @chartSize is 'big'
-      @updateChartEvery(10)
-
     @
 
   buildChartOptions: ->
@@ -35,7 +37,9 @@ class Chart
     @c3object.load(data)
 
   getMetricData: ->
-    $.getJSON("/metrics/" + @metricId + ".json")
+    url = "/metrics/" + @metricId + ".json"
+    url += '?start_time=' + @datapointStartTime + '&end_time=' + @datapointEndTime if @datapointStartTime && @datapointEndTime
+    $.getJSON(url)
 
   formatDataForC3: (datapointsArray) ->
     datapointsArray.pop()
@@ -50,8 +54,8 @@ class Chart
     self = this
     @getMetricData().done((data) ->
       self.insertMetricData(self.formatDataForC3(data.datapoints))
-      self.setAlarmLines(data.alarm.warning, data.alarm.error)
-      self.setGraphColor(data.alarm.state)
+      self.setAlarmLines(data.alarm.warning, data.alarm.error) if self.enableAlarming
+      self.setGraphColor(data.alarm.state) if self.enableAlarming
       self.setGraphYRange(data.datapoints, data.alarm.warning, data.alarm.error)
     )
 
@@ -139,11 +143,57 @@ class Chart
         show: false
 
 
+class DateRangePicker
+  constructor: (el, $start_time, $end_time) ->
+    @el = el
+    @displayTimeFormat = 'YYYY-MM-DD HH:mmZ'
+
+    startTime = moment.unix($start_time.val()) if $start_time.val()
+    endTime = moment.unix($end_time.val()) if $end_time.val()
+    @el.val(startTime.format(@displayTimeFormat) + ' - ' + endTime.format(@displayTimeFormat)) if startTime && endTime
+
+    @datePicker = @el.daterangepicker(@getOptions())
+    @attachEventHandler()
+
+  attachEventHandler: ->
+    self = this
+    @datePicker.on('show.daterangepicker', (ev, picker) ->
+      picker.setOptions(self.getOptions())
+    )
+    @datePicker.on('apply.daterangepicker', (ev, picker) ->
+      $('input[name="start_time"]').val(picker.startDate.unix())
+      $('input[name="end_time"]').val(picker.endDate.unix())
+    )
+
+  getOptions: ->
+    self = this
+    now = moment()
+    {
+      ranges:
+        'Last 10 minutes': [now.clone().subtract('minutes', 10), now],
+        'Last 30 minutes': [now.clone().subtract('minutes', 30), now],
+        'Last hour': [now.clone().subtract('hours', 1), now],
+        'Last 4 hours': [now.clone().subtract('hours', 4), now],
+        'Last Day': [now.clone().subtract('days', 1), now],
+        'Last Week': [now.clone().subtract('days', 6), now]
+      opens: 'right',
+      format: self.displayTimeFormat
+      minDate: now.clone().subtract('days', 7),
+      maxDate: now,
+      timePicker: true,
+      timePickerIncrement: 1
+    }
+
 chartsOpen = {}
 $(document).on("page:change", ->
   _.each(chartsOpen, (c) ->
     c.destroy()
   )
+
+  $('input[class*="daterange"]').each( ->
+    new DateRangePicker($(this), $('input[name="start_time"]'), $('input[name="end_time"]'))
+  )
+
   $(".metric-chart").each( ->
     chart = new Chart($(this))
     chartsOpen["chart_#{chart.metricId}_#{chart.chartSize}"] = chart

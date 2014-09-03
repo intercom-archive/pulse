@@ -7,6 +7,15 @@
     </small>
   </h1>
 </div>
+<form action="<% metric_path @metric %>" method="get">
+    <div class="row" style="padding-bottom: 15px">
+      <div class="col-md-12"><label for="date_range">Time Period: </label></div>
+      <div class="col-md-5"><input type="text" class="form-control daterange" data-start_time="<%= params[:start_time] %>" data-end_time="<%= params[:end_time] %>"/></div>
+      <div class="col-md-1"><input type="submit" value="Go" class="btn btn-primary" /> </div>
+      <input type="hidden" name="start_time" value="<%= params[:start_time] %>" />
+      <input type="hidden" name="end_time" value="<%= params[:end_time] %>" />
+    </div>
+</form>
 
 <div class="row">
   <div class="col-md-3">

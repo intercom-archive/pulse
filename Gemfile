@@ -11,6 +11,8 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'bootstrap-sass', '~> 3.2.0'
+gem 'momentjs-rails'
+gem 'bootstrap-daterangepicker-rails', :git => 'https://github.com/dannyfallon/bootstrap-daterangepicker-rails.git'
 
 gem 'aws-sdk'
 gem 'httparty'

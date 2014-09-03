@@ -92,4 +92,22 @@ RSpec.describe CloudwatchMetric, :type => :library do
       end
     end
   end
+
+  describe "#start_time=" do
+    it "sets the start time for fetching datapoints" do
+      now = Time.now
+      cw_metric.start_time = now
+      opts = cw_metric.send(:statistics_options)
+      expect(opts[:start_time]).to eq(now)
+    end
+  end
+
+  describe "#end_time=" do
+    it "sets the end time for fetching datapoints" do
+      now = Time.now
+      cw_metric.end_time = now
+      opts = cw_metric.send(:statistics_options)
+      expect(opts[:end_time]).to eq(now)
+    end
+  end
 end

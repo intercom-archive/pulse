@@ -21,13 +21,16 @@ class Metric < ActiveRecord::Base
     datapoint_source == 'graphite'
   end
 
-  def datapoints
+  def datapoints(start_time = nil, end_time = nil)
     return @datapoints unless @datapoints.nil?
     if cloudwatch_metric?
-      @datapoints = CloudwatchMetric.new(cloudwatch_namespace, datapoint_name, cloudwatch_identifier).datapoints
+      datapoint_lib = CloudwatchMetric.new(cloudwatch_namespace, datapoint_name, cloudwatch_identifier)
     else
-      @datapoints = GraphiteMetric.new(title, datapoint_name).datapoints
+      datapoint_lib = GraphiteMetric.new(title, datapoint_name)
     end
+    datapoint_lib.start_time = start_time if start_time
+    datapoint_lib.end_time = end_time if end_time
+    @datapoints = datapoint_lib.datapoints
   end
 
   def alarm_state

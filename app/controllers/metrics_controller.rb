@@ -7,10 +7,13 @@ class MetricsController < ApplicationController
   end
 
   def show
+    start_time ||= time_object(params[:start_time])
+    end_time ||= time_object(params[:end_time])
+
     respond_to do |format|
       format.html
       format.json { render json: {
-          datapoints: @metric.datapoints,
+          datapoints: @metric.datapoints(start_time, end_time),
           alarm: {
             error: @metric.alarm_error,
             state: @metric.alarm_state,
@@ -66,5 +69,9 @@ class MetricsController < ApplicationController
       params.require(:metric).permit(:title, :datapoint_source, :datapoint_name, :summary, :mitigation_steps, :contact,
                                      :cloudwatch_namespace, :cloudwatch_identifier, :alarm_warning, :alarm_error,
                                      :negative_alarming)
+    end
+
+    def time_object(timestamp)
+      Time.at(timestamp.to_i) if timestamp
     end
 end

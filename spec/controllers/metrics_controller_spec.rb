@@ -37,8 +37,17 @@ RSpec.describe MetricsController, :type => :controller do
   describe "GET show" do
     it "assigns the requested metric as @metric" do
       metric = Metric.create! valid_attributes
-      get :show, { :service_id => service.to_param, :id => metric.to_param }
+      get :show, { :id => metric.to_param }
       expect(assigns(:metric)).to eq(metric)
+    end
+
+    describe "with time limits" do
+      it "has a start_time and end_time param in the URL" do
+        metric = Metric.create! valid_attributes
+        time = Time.now.to_i
+        get :show, { :id => metric.to_param, :start_time => time - 600, :end_time => time }
+        expect(controller.params[:start_time]).to eq((time - 600).to_s)
+      end
     end
   end
 

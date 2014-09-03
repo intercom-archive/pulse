@@ -1,5 +1,5 @@
 class CloudwatchMetric
-  attr_reader :cloudwatch_metric
+  attr_writer :start_time, :end_time
 
   CLOUDWATCH_IDENTIFIER_MAP = {
       'AWS/EC2' => 'AutoScalingGroupName',
@@ -14,6 +14,8 @@ class CloudwatchMetric
     @metric = metric
     @identifier = identifier
     @cloudwatch_metric = AWS::CloudWatch::Metric.new(namespace, metric, :dimensions => [dimensions])
+    @start_time = Time.now - 600
+    @end_time = Time.now
   end
 
   def datapoints
@@ -25,12 +27,20 @@ class CloudwatchMetric
     return []
   end
 
+  def start_time=(time)
+    @start_time = time
+  end
+
+  def end_time=(time)
+    @end_time = time
+  end
+
   private
     def dimensions
       { name: CLOUDWATCH_IDENTIFIER_MAP[@namespace], value: @identifier }
     end
 
     def statistics_options
-      { statistics: ["Average"], start_time: Time.now - 600, end_time: Time.now }
+      { statistics: ["Average"], start_time: @start_time, end_time: @end_time }
     end
 end
