@@ -54,8 +54,8 @@ class Chart
     self = this
     @getMetricData().done((data) ->
       self.insertMetricData(self.formatDataForC3(data.datapoints))
-      self.setAlarmLines(data.alarm.warning, data.alarm.error)
-      self.setGraphColor(data.alarm.state)
+      self.setAlarmLines(data.alarm.warning, data.alarm.error) if self.enableAlarming
+      self.setGraphColor(data.alarm.state) if self.enableAlarming
       self.setGraphYRange(data.datapoints, data.alarm.warning, data.alarm.error)
     )
 
