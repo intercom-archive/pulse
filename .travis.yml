@@ -5,6 +5,7 @@ rvm:
   - 2.1.1
 script: bundle exec rspec
 env:
-  - GRAPHITE_URL=http://graphite.wikidot.com
-  - GRAPHITE_USERNAME=test
-  - GRAPHITE_PASSWORD=test
+  global:
+    - GRAPHITE_URL=http://graphite.wikidot.com
+    - GRAPHITE_USERNAME=test
+    - GRAPHITE_PASSWORD=test
