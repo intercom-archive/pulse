@@ -2,7 +2,7 @@ before_script:
   - psql -c 'create database pulse_test;' -U postgres
 language: ruby
 rvm:
-  - 2.1.1
+  - 2.1.4
 script: bundle exec rspec
 env:
   - GRAPHITE_URL=http://graphite.wikidot.com
