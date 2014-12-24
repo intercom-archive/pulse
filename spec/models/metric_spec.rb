@@ -82,7 +82,7 @@ RSpec.describe Metric, :type => :model do
           [2534, 20],
           [312, 30],
           [13, 40],
-          [0, 50]
+          [nil, 50]
         ])
         allow(GraphiteMetric).to receive(:new).and_return(lib)
       }
