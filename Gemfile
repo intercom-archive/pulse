@@ -17,6 +17,7 @@ gem 'bootstrap-daterangepicker-rails', :git => 'https://github.com/dannyfallon/b
 gem 'aws-sdk'
 gem 'httparty'
 gem 'pry-rails'
+gem 'sentry-raven', '>= 0.12.2'
 
 group :production do
   gem 'rails_12factor', require: false
