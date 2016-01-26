@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.2.3'
 
-gem 'rails', '~> 4.1.11'
+gem 'rails', '~> 4.1.14.1'
 gem 'pg'
 gem 'warden-github-rails'
 gem 'sass-rails', '~> 4.0.3'
