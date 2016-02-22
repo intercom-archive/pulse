@@ -50,7 +50,7 @@ class Metric < ActiveRecord::Base
 
   private
     def latest_datapoint
-      return datapoints[-2].first if graphite_metric?
+      return datapoints.map { |point| point unless point.first.nil? }.compact.last.first if graphite_metric?
       datapoints.last.first
     end
 
